@@ -1,5 +1,5 @@
 import unittest
-from app import app  # Import your Flask app instance
+from app import app
 
 
 class TestModelAppIntegration(unittest.TestCase):
@@ -7,9 +7,9 @@ class TestModelAppIntegration(unittest.TestCase):
 	def setUp(self):
 		app.testing = True
 		self.client = app.test_client()
-		
+
 	def test_model_app_integration(self):
-		# Valid test input that should work with the trained model
+
 		form_data = {
 			'temperature': '275.15',   # Kelvin
 			'pressure': '1013',        # hPa
@@ -23,13 +23,10 @@ class TestModelAppIntegration(unittest.TestCase):
 		}
 
 		response = self.client.post('/', data=form_data)
-	
-		# Complete below
-		# Ensure that the result page (response.data) should include a weather prediction
-		
-	
-		# Ensure that the result page should include a prediction time
-		
+
+		self.assertNotIn(b"The weather is:</strong> </p>", response.data)
+
+		self.assertNotIn(b"Prediction time:</strong> </p>", response.data)
 
 		html_text = response.data.decode('utf-8').lower()
 		valid_classes = [
@@ -37,9 +34,8 @@ class TestModelAppIntegration(unittest.TestCase):
 			'misty', 'rainy', 'smokey', 'thunderstorm'
 		]
 		found = any(weather in html_text for weather in valid_classes)
-		
-		# Ensure that classification is in valid classes, provide an error message if not.
-		
+
+		self.assertTrue(found, "Invalid weather class")
 
 if __name__ == '__main__':
 	unittest.main()
