@@ -1,0 +1,39 @@
+- name: Install kubectl and minikube
+  hosts: localhost
+  user: ubuntu
+  become: yes
+  tasks:
+# --- Kubectl installation ---
+    - name: Update pacakge manager
+      apt:
+        update_cache: yes
+
+    - name: Install apt-transport-https
+      apt:
+        update_cache: yes
+        name: apt-transport-https
+
+    - name: Add apt key
+      shell:
+        cmd: curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.34/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+
+    - name: Add apt repository
+      apt_repository:
+        repo: 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.34/deb/ /'
+
+    - name: Update pacakge manager again
+      apt:
+        update_cache: yes
+
+    - name: Install kubectl
+      snap:
+        name: kubectl
+# --- Minikube installation ---
+    - name: Download Minikube
+      get_url:
+        url: https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+        dest: /usr/local/bin/minikube
+        mode: '0755'
+
+    - name: Start Minikube
+      command: minikube start --force

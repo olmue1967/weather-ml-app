@@ -1,0 +1,6 @@
+- name: Deploy image on kubernetes
+  hosts: localhost
+  tasks:
+    - name: Create deployment
+      command: kubectl create deployment weather-app --image=hkhanb301/weather-ml-app:v1
+
