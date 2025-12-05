@@ -53,6 +53,6 @@ def home():
 
     return render_template('form.html')
 
-
+#expose to all ip addresses
 if __name__ == 'main':
     app.run(host="0.0.0.0", port=5000)
