@@ -30,4 +30,4 @@ jobs:
     - name: Run Integration Tests
       run: pytest tests/integration_test.py
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+      run: docker build . --file Dockerfile --tag weather-ml-app:$(date +%s)
